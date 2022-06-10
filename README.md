@@ -11,7 +11,7 @@ You need to have openssl installed. We use hash_hmac() function to create the si
 The package includes:
 A config file:
 
-> Allows you to define request types by name. And give each type of request a unique signature secret string to use when validating signed request payloads.
+> Allows you to define request types by name and give each type of request a unique signature secret string to use when validating signed request payloads.
 
 A working middleware validator:
 

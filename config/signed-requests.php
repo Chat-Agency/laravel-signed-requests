@@ -23,6 +23,9 @@ return [
     'secrets' => [
         'request' => env('REQUEST_SECRET', 'customize-this-request-secret'),
         'webhook' => env('WEBHOOK_SECRET', 'customize-this-webhook-secret'),
-        'whatever-you-want' => env('WHATEVER_YOU_WANT_SECRET', 'customize-each-of-these-secrets!')
+        'whatever-you-want' => env(
+            'WHATEVER_YOU_WANT_SECRET',
+            'customize-each-of-these-secrets-or-delete-if-unwanted!'
+        ),
     ]
 ];
