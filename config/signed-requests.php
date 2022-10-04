@@ -3,11 +3,13 @@
 return [
     // the name of the signed requests signature header
     'signature_header' => env('SIGNATURE_HEADER', 'X-BaseSignature'),
+    'sigval_header' => env('SIGNATURE_VALID_HEADER', 'X-SIG-VAL'),
 
+    //the algorithms used when checking
     'algorithms' => [
         'request' => 'sha256',
         'webhook' => 'sha512',
-        'whatever-you-want' => 'gost-crypto'
+        'whatever-you-want' => 'haval256'
     ],
 
     // These are the types of requests that will be supported
