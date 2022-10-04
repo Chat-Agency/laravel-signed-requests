@@ -1,4 +1,5 @@
 <?php
+
 namespace ChatAgency\LaravelSignedRequests\Http\Middleware;
 
 use Closure;
@@ -51,11 +52,14 @@ class ValidateSignedRequest
             // everything is peachy!
             return $next($request);
         } else {
-            // You shall not pass! - Gandalf the Middlewiseware.
+            // You shall not pass! - Gandalf the Middlewarewise.
             abort(403, 'Whatever you tried to do; You can\'t.');
         }
 
+        $response = $next($request);
 
-        return $next($request);
+        $response->header('x-signature-valid', 'yes');
+
+        return $response;
     }
 }
