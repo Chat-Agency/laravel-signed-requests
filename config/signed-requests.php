@@ -3,6 +3,7 @@
 return [
     // the name of the signed requests signature header
     'signature_header' => env('SIGNATURE_HEADER', 'X-BaseSignature'),
+    'sigval_header' => env('SIGNATURE_VALID_HEADER', 'X-SIG-VAL'),
 
     //the algorithms used when checking
     'algorithms' => [
