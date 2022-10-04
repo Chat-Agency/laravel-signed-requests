@@ -41,6 +41,16 @@ class SignedRequestService
     }
 
     /**
+     * getSignatureHeaderName
+     *
+     * @return mixed
+     */
+    public function getSignatureHeaderName()
+    {
+        return config('signed-requests.signature_header');
+    }
+
+    /**
      * Get the type from this instance
      *
      * @return string
@@ -76,15 +86,34 @@ class SignedRequestService
     /**
      * Set payload
      *
-     * @param string $payload
+     * @param mixed $payload expects string or array
      *
      * @return self
      */
-    public function setPayload(string $payload)
+    public function setPayload($payload)
     {
+        if (is_array($payload)) {
+            $payload = json_encode($payload);
+        }
+
         $this->payload = $payload;
 
         return $this;
+    }
+
+    /**
+     * generate hash for request type and loaded payload
+     *
+     * @param  string $type  the type of request
+     * @return string
+     */
+    public function hashPayload(string $type)
+    {
+        $p = $this->payload;
+        $algo = config('signed-requests.algorithms.' . $type);
+        $secret = config('signed-requests.secrets.'.$type);
+
+        return hash_hmac($algo, trim($p), $secret);
     }
 
     /**

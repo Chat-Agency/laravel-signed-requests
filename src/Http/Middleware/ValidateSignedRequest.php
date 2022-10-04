@@ -1,4 +1,5 @@
 <?php
+
 namespace ChatAgency\LaravelSignedRequests\Http\Middleware;
 
 use Closure;
@@ -25,6 +26,7 @@ class ValidateSignedRequest
         $isValidSig = false;
         $params = collect($request->all());
         $signature_header = config('signed-requests.signature_header');
+        $sigval_header = config('signed-requests.sigval_header');
         $secret = config('signed-requests.secrets.'.self::REQUEST_TYPE);
         $signature = $request->header($signature_header);
 
@@ -44,18 +46,22 @@ class ValidateSignedRequest
                 'headers' => $request->headers->all(),
             ], 1));
             // then abort the request, it was malformed
-            abort(401, 'Your request is missing some key parameters. Send them over on your next attempts.');
+            abort(401, 'Your request is missing some key parameters. Send them over on your next attempts.', [
+                $sigval_header => 'no'
+            ]);
         }
 
         if ($isValidSig) {
             // everything is peachy!
-            return $next($request);
+            $response = $next($request);
+
+            $response->header($sigval_header, 'yes');
+            return $response;
         } else {
-            // You shall not pass! - Gandalf the Middlewiseware.
-            abort(403, 'Whatever you tried to do; You can\'t.');
+            // You shall not pass! - Gandalf the Middlewarewise.
+            abort(403, 'Whatever you tried to do; You can\'t.', [
+                $sigval_header => 'no'
+            ]);
         }
-
-
-        return $next($request);
     }
 }
